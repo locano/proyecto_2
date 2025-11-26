@@ -1,0 +1,5 @@
+{"response_code":200,"host":"DESKTOP-SKMLNJR","script":"blue-team-traffic","timestamp":"2025-11-24T23:52:13.7845819-06:00","fileset.name":"blue-team","endpoint":"http://localhost:3000","status":"OK"}
+{"response_code":200,"host":"DESKTOP-SKMLNJR","script":"blue-team-traffic","timestamp":"2025-11-24T23:52:18.9503001-06:00","fileset.name":"blue-team","endpoint":"http://localhost:3000/#/login","status":"OK"}
+{"response_code":200,"host":"DESKTOP-SKMLNJR","script":"blue-team-traffic","timestamp":"2025-11-24T23:52:24.0099852-06:00","fileset.name":"blue-team","endpoint":"http://localhost:3000/rest/products/search?q=apple","status":"OK"}
+{"response_code":200,"host":"DESKTOP-SKMLNJR","script":"blue-team-traffic","timestamp":"2025-11-24T23:52:29.1021467-06:00","fileset.name":"blue-team","endpoint":"http://localhost:3000/rest/products/search?q=juice","status":"OK"}
+{"response_code":200,"host":"DESKTOP-SKMLNJR","script":"blue-team-traffic","timestamp":"2025-11-24T23:52:34.2219658-06:00","fileset.name":"blue-team","endpoint":"http://localhost:3000/api/Products","status":"OK"}
