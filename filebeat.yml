@@ -1,52 +1,46 @@
 filebeat.inputs:
-  # Input tipo container - especializado para logs de Docker
   - type: container
     enabled: true
     paths:
-      # Lee todos los logs de todos los contenedores
       - '/var/lib/docker/containers/*/*.log'
     processors:
-      # Agrega metadata del contenedor (nombre, ID, imagen, etc.)
       - add_docker_metadata:
           host: "unix:///var/run/docker.sock"
-      # Decodifica campos JSON en el mensaje
       - decode_json_fields:
           fields: ["message"]
           target: "json"
           overwrite_keys: true
 
-# Procesadores globales que se aplican a todos los logs
+  # 🔵 Blue Team logs (PowerShell)
+  - type: log
+    enabled: true
+    paths:
+      - '/blue-team-logs/blue-team.log'   # <<<<<< ruta corregida
+    json.keys_under_root: true
+    json.add_error_key: true
+    fields:
+      fileset.name: "blue-team"
+      script: "blue-team-traffic"
+    fields_under_root: true
+
 processors:
-  # Agrega informaci?n del host (hostname, OS, IP)
   - add_host_metadata:
       when.not.contains.tags: forwarded
-  # Agrega metadata de cloud si est? en AWS/GCP/Azure
   - add_cloud_metadata: ~
-  # Agrega metadata adicional de Docker
   - add_docker_metadata: ~
 
-# Configuraci?n de salida a Elasticsearch
 output.elasticsearch:
-  # Host de Elasticsearch (usa variable de entorno o default)
-  hosts: ["${ELASTICSEARCH_HOSTS:elasticsearch:9200}"]
-  
-  # ?ndices din?micos basados en el contenedor
-  indices:
-    # Logs de Juice Shop van a su propio ?ndice
-    - index: "filebeat-juice-shop-%{+yyyy.MM.dd}"
-      when.contains:
-        container.name: "juice-shop"
-    # Todos los dem?s logs van a ?ndice general
-    - index: "filebeat-docker-%{+yyyy.MM.dd}"
+  hosts: ["http://elasticsearch:9200"]
+  username: "elastic"
+  password: "changeme"
 
-# Configuraci?n de Kibana para dashboards
 setup.kibana:
-  host: "${KIBANA_HOST:kibana:5601}"
+  host: "http://kibana:5601"
+  username: "elastic"
+  password: "changeme"
 
-# Habilita la carga autom?tica de dashboards
 setup.dashboards.enabled: true
 
-# Configuraci?n de logging de Filebeat
 logging.level: info
 logging.to_files: true
 logging.files:
